@@ -108,10 +108,10 @@ seekmywork/
 │   ├── 06-gap-analyzer.md
 │   ├── 07-interview-prep.md
 │   └── 08-application-tracker.md
-└── assets/
-    ├── companies.json              # Company config template
-    ├── company-database.md         # Local company database (Changsha IT/Security/BigTech)
-    └── brag-doc-template.md        # Personal experience inventory template
+└── (user-local files, created on first use)
+    ├── brag-doc.md                 # Personal experience inventory
+    ├── company-db.md               # Local company database
+    └── 投递追踪.md                  # Application tracker
 ```
 
 ## Design Principles
@@ -120,7 +120,8 @@ seekmywork/
 - **Modular** — 8 modules work independently or as a pipeline
 - **Scripts as black boxes** — called via CLI args, agents don't need to read source
 - **Real data only** — all jobs/reviews must include source URLs, no fabrication
-- **Brag doc driven** — fill once, reuse across resume generation and interview prep
+- **Brag doc driven** — user-local `brag-doc.md`, fill once, reuse across resume and interview prep
+- **Data localization** — user data (brag doc, company DB, tracker) lives in user's working directory, not bundled in the skill
 
 ## Acknowledgements
 

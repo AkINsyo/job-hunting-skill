@@ -3,7 +3,7 @@ name: seekmywork
 description: AI-powered job hunting assistant for campus recruitment. Generates resumes, discovers target companies, fetches job listings, matches resumes to positions, creates improvement plans, prepares interviews, and tracks applications. Use when the user says "求职", "校招", "找工作", "帮我写简历", "帮我找公司", "拉取岗位", "帮我匹配", "帮我准备面试", "帮我记录投递", or any job-hunting related request.
 compatibility: Requires Python 3.8+ and optionally Playwright (for career page scraping). Scripts use only stdlib except scrape_career.py and browse_career.py which need playwright.
 metadata:
-  version: "5.0.0"
+  version: "6.0.0"
   author: AkINsyo
   language: zh-CN
   modules: resume-generator,company-explorer,campus-recruitment-finder,job-jd-fetcher,resume-job-matcher,gap-analyzer,interview-prep,application-tracker
@@ -13,7 +13,22 @@ metadata:
 
 ## Overview
 
-SeekMyWork is a modular AI job-hunting assistant with 8 modules that can run independently or as a pipeline. You are an advisor — present information and analysis, let the user decide.
+SeekMyWork is a modular AI job-hunting assistant with 8 modules. You are an advisor — present information and analysis, let the user decide.
+
+## User-Local Files
+
+When this skill is first used, create the following files in the user's working directory. These are **user-specific data**, not bundled with the skill.
+
+| File | Purpose | Created by |
+|------|---------|-----------|
+| `brag-doc.md` | 个人经历素材库 | Module 1 引导用户填写 |
+| `company-db.md` | 本地公司知识库 | Module 2 调研后自动积累 |
+| `投递追踪.md` | 投递状态记录 | Module 8 自动创建 |
+
+**Rules:**
+- 不要读取 skill 内部的文件作为数据源
+- 所有用户数据写入用户工作目录
+- 首次使用时检查文件是否存在，不存在则引导创建
 
 ## Modules
 
@@ -34,38 +49,29 @@ Detailed docs: `references/01-resume-generator.md` through `references/08-applic
 
 ```
 User request → What do they need?
-├── "帮我写简历" / "生成简历" → Module 1 (references/01-resume-generator.md)
-├── "帮我找公司" / "哪些公司适合我" → Module 2 (references/02-company-explorer.md)
-├── "找校招网站" / "XX校招在哪" → Module 3 (references/03-campus-recruitment-finder.md)
-├── "看看在招什么" / "拉取岗位" → Module 4 (references/04-job-jd-fetcher.md)
-├── "帮我匹配" / "推荐岗位" → Module 5 (references/05-resume-job-matcher.md)
-│   └── Check: resume exists? jobs exist? → Run missing modules first
-├── "分析不足" / "提升建议" → Module 6 (references/06-gap-analyzer.md)
-├── "帮我准备面试" / "面试会问什么" → Module 7 (references/07-interview-prep.md)
-├── "帮我记录投递" / "我投了XX公司" → Module 8 (references/08-application-tracker.md)
+├── "帮我写简历" / "生成简历" → Module 1
+├── "帮我找公司" / "哪些公司适合我" → Module 2
+├── "找校招网站" / "XX校招在哪" → Module 3
+├── "看看在招什么" / "拉取岗位" → Module 4
+├── "帮我匹配" / "推荐岗位" → Module 5
+├── "分析不足" / "提升建议" → Module 6
+├── "帮我准备面试" / "面试会问什么" → Module 7
+├── "帮我记录投递" / "我投了XX公司" → Module 8
 ├── "看看进度" / "投了多少家" → Module 8 (进度汇总)
 └── "完整流程" / "从头开始" → 1 → 2 → 3 → 4 → 5 → 6
 ```
 
-## Brag Doc（项目素材库）
-
-`assets/brag-doc-template.md` 是个人经历素材库模板。建议用户在求职前先填写素材库，后续简历生成和面试准备时自动从中提取内容。
-
-`assets/company-database.md` 是本地公司知识库，包含长沙 IT/安全/大厂公司的结构化信息和已知校招 API。每次调研后自动更新。
-
-**工作方式**：素材库积累 → 简历按 JD 自动组合 → 面试按岗位自动出题
-
 ## Output Files
 
 ```
-简历_{用户名}.md/.json        ← Module 1（Markdown + 结构化 JSON）
-目标公司清单_{日期}.md        ← Module 2
+简历_{用户名}.md/.json        ← Module 1
+目标公司清单_{日期}.md/.json  ← Module 2
 校招网站汇总.md               ← Module 3
 jobs/{公司}_jobs.json/.md     ← Module 4
 匹配结果_{日期}.md            ← Module 5
 提升计划_{日期}.md            ← Module 6
-面试准备_{公司}_{岗位}_{日期}.md  ← Module 7
-投递追踪.md                   ← Module 8（持续更新）
+面试准备_{公司}_{岗位}.md     ← Module 7
+投递追踪.md                   ← Module 8
 ```
 
 ## Core Rules
@@ -76,7 +82,8 @@ jobs/{公司}_jobs.json/.md     ← Module 4
 4. **Only recommend free resources** — no paid courses
 5. **Don't decide for the user** — use "建议"/"推荐" not "你应该"
 6. **No value judgments** — don't rate schools/degrees
-7. **Evidence guard** — every claim in resume must trace back to user-provided info
+7. **Evidence guard** — every claim must trace back to user-provided info
+8. **User data stays local** — write to user's working directory, not skill internals
 
 ## Scripts
 
@@ -98,17 +105,7 @@ python scripts/browse_career.py --base-url "https://career.xxx.com" --explore
 python scripts/fetch_jobs.py \
   --api-url "https://xxx/api/lark/hire/v1/jobs" \
   --website-id 123456 --city 长沙 --output jobs/xxx_jobs.json
-
-# Batch fetch from config
-python scripts/fetch_jobs.py --config assets/companies.json --output-dir jobs/
 ```
-
-### Lark Hire API Notes
-
-- `page_size` max is 20 (error 99992402 if exceeded)
-- Pagination via `page_token` + `has_more`
-- City filter via `city_code` (e.g. CT_20 = Changsha)
-- Common API path: `*/api/lark/hire/v1/jobs`
 
 ## Common Pitfalls
 
@@ -116,10 +113,8 @@ python scripts/fetch_jobs.py --config assets/companies.json --output-dir jobs/
 |---------|-----|
 | Skipping user confirmation | At least one confirmation per module |
 | Fabricating search results | Report "not found" honestly |
-| Running all modules when only one needed | Only re-run affected modules |
-| Reading script source before running `--help` | Try `--help` first, scripts are black boxes |
-| Generating resume without checking brag doc | Ask if user has filled素材库 first |
-| Skipping interview prep before real interview | Always offer Module 7 when interview is scheduled |
+| Bundling user data into skill | Write to user's working directory |
+| Reading script source before `--help` | Try `--help` first, scripts are black boxes |
 
 ## Mid-Flow Preference Changes
 
