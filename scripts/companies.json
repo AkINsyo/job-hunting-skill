@@ -1,0 +1,10 @@
+[
+  {
+    "company": "安克创新",
+    "api_url": "https://rainbow-recall.anker.com.cn/api/lark/hire/v1/jobs",
+    "website_id": "6962795203808217351",
+    "city_code": "CT_20",
+    "city_name": "长沙",
+    "max_pages": 20
+  }
+]

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Temp
+temp_*
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Legacy (kept for reference, not actively maintained)
+legacy/
+
+# Screenshots (generated, not source)
+*.png
