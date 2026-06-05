@@ -19,7 +19,7 @@ SeekMyWork is a modular AI job-hunting assistant with 6 modules that can run ind
 
 | # | Module | What it does | Depends on |
 |---|--------|-------------|------------|
-| 1 | resume-generator | Collect info → generate structured resume | — |
+| 1 | resume-generator | Collect info + JD analysis → generate ATS-ready resume (MD + JSON) | — |
 | 2 | company-explorer | Industry research → company screening → employee reviews | 1 |
 | 3 | campus-recruitment-finder | Find campus recruitment URLs | 2 |
 | 4 | job-jd-fetcher | Fetch job listings to local files | 3 |
