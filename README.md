@@ -112,6 +112,7 @@ seekmywork/
 │   └── 08-application-tracker.md
 └── assets/
     ├── companies.json              # 公司配置模板
+    ├── company-database.md         # 本地公司知识库（长沙 IT/安全/大厂）
     └── brag-doc-template.md        # 个人经历素材库模板
 ```
 

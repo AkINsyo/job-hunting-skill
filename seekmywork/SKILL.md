@@ -20,7 +20,7 @@ SeekMyWork is a modular AI job-hunting assistant with 8 modules that can run ind
 | # | Module | What it does | Depends on |
 |---|--------|-------------|------------|
 | 1 | resume-generator | Collect info + JD analysis → ATS-ready resume (MD + JSON) | — |
-| 2 | company-explorer | Industry research → company screening → employee reviews | 1 |
+| 2 | company-explorer | Industry research → OSINT company profiles → competitor analysis → risk assessment | 1 |
 | 3 | campus-recruitment-finder | Find campus recruitment URLs | 2 |
 | 4 | job-jd-fetcher | Fetch job listings to local files | 3 |
 | 5 | resume-job-matcher | Multi-dimension resume-job matching | 1 + 4 |
@@ -50,6 +50,8 @@ User request → What do they need?
 ## Brag Doc（项目素材库）
 
 `assets/brag-doc-template.md` 是个人经历素材库模板。建议用户在求职前先填写素材库，后续简历生成和面试准备时自动从中提取内容。
+
+`assets/company-database.md` 是本地公司知识库，包含长沙 IT/安全/大厂公司的结构化信息和已知校招 API。每次调研后自动更新。
 
 **工作方式**：素材库积累 → 简历按 JD 自动组合 → 面试按岗位自动出题
 

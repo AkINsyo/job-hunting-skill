@@ -110,6 +110,7 @@ seekmywork/
 │   └── 08-application-tracker.md
 └── assets/
     ├── companies.json              # Company config template
+    ├── company-database.md         # Local company database (Changsha IT/Security/BigTech)
     └── brag-doc-template.md        # Personal experience inventory template
 ```
 
