@@ -38,7 +38,7 @@ from datetime import datetime
 def _get_playwright():
     try:
         from playwright.sync_api import sync_playwright
-        return sync_playwright
+        return sync_playwright()
     except ImportError:
         print("Error: playwright not installed. Run: pip install playwright && playwright install chromium")
         sys.exit(1)
@@ -106,7 +106,13 @@ def extract_lark_jobs(data: dict) -> list[dict]:
 
     # 标准飞书招聘格式
     if data.get("code") == 0 and "data" in data:
-        items = data["data"].get("items", [])
+        inner = data["data"]
+        if isinstance(inner, dict):
+            items = inner.get("items", [])
+        elif isinstance(inner, list):
+            items = inner
+        else:
+            items = []
         jobs = []
         for item in items:
             jobs.append({

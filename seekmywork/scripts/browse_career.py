@@ -31,7 +31,7 @@ from datetime import datetime
 def _get_playwright():
     try:
         from playwright.sync_api import sync_playwright
-        return sync_playwright
+        return sync_playwright()
     except ImportError:
         print("Error: playwright not installed. Run: pip install playwright && playwright install chromium")
         sys.exit(1)
