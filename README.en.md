@@ -109,15 +109,46 @@ seekmywork/
 │   ├── 07-interview-prep.md
 │   └── 08-application-tracker.md
 └── assets/
-    └── companies.json              # Company config template
+    ├── companies.json              # Company config template
+    └── brag-doc-template.md        # Personal experience inventory template
 ```
 
 ## Design Principles
 
 - **Progressive disclosure** — metadata (~100 tokens) → SKILL.md (<5000 tokens) → references/ (on demand)
-- **Modular** — 6 modules work independently or as a pipeline
+- **Modular** — 8 modules work independently or as a pipeline
 - **Scripts as black boxes** — called via CLI args, agents don't need to read source
 - **Real data only** — all jobs/reviews must include source URLs, no fabrication
+- **Brag doc driven** — fill once, reuse across resume generation and interview prep
+
+## Acknowledgements
+
+This project was inspired by the following open-source Agent Skill projects:
+
+### Specification & Architecture
+
+| Project | Description | What we learned |
+|---------|-------------|-----------------|
+| [anthropics/skills](https://github.com/anthropics/skills) | Anthropic's official Skill examples | Agent Skills spec, directory structure, progressive disclosure |
+| [agentskills.io](https://agentskills.io/specification) | Agent Skills open specification | Frontmatter standard, scripts/references/assets conventions |
+
+### Job Hunting Skills
+
+| Project | ⭐ | Description | What we learned |
+|---------|---|-------------|-----------------|
+| [Paramchoudhary/ResumeSkills](https://github.com/Paramchoudhary/ResumeSkills) | 683 | 20 modular resume/career skills | Modular architecture, bullet writing, ATS optimization |
+| [liyupi/yupi-skill](https://github.com/liyupi/yupi-skill) | 312 | Chinese developer knowledge distillation | Chinese job market, personal IP approach |
+| [surapuramakhil-org/Job_search_agent](https://github.com/surapuramakhil-org/Job_search_agent) | 150 | Auto search + apply agent | Automation workflow design |
+| [spontaneousai/job-hunt-copilot](https://github.com/spontaneousai/job-hunt-copilot) | 136 | Inventory + tailored resumes + interview scripts | Brag Doc mechanism |
+| [couragec/LLMInternSkill](https://github.com/couragec/LLMInternSkill) | 113 | LLM internship job-search skill | Evidence Guard anti-fabrication |
+| [SankaiAI/ats-optimized-resume-agent-skill](https://github.com/SankaiAI/ats-optimized-resume-agent-skill) | 71 | ATS-optimized resume skill | Gate system, humanization pass, JSON schema |
+| [jason-huanghao/jobradar](https://github.com/jason-huanghao/jobradar) | 39 | Germany + China tech job search | Dual-market coverage |
+| [Jichengyuuuuu/resume-builder-skill](https://github.com/Jichengyuuuuu/resume-builder-skill) | 31 | Chinese resume builder | Dynamic skill dimensions, HTML+DOCX output |
+| [YIKUAIBANZI/job-hunter](https://github.com/YIKUAIBANZI/job-hunter) | 20 | Batch application automation | JD matching, application tracking |
+| [earino/resumasher](https://github.com/earino/resumasher) | 7 | Resume + cover letter + interview prep | Interview prep module design |
+| [REALGSY/offer-catcher](https://github.com/REALGSY/offer-catcher) | 2 | Campus recruitment matching agent | Campus recruitment reference |
+
+Thanks to all the above projects for their contributions to the open-source ecosystem.
 
 ## License
 

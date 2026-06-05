@@ -111,15 +111,46 @@ seekmywork/
 │   ├── 07-interview-prep.md
 │   └── 08-application-tracker.md
 └── assets/
-    └── companies.json              # 公司配置模板
+    ├── companies.json              # 公司配置模板
+    └── brag-doc-template.md        # 个人经历素材库模板
 ```
 
 ## 设计原则
 
 - **渐进式加载** — metadata (~100 tokens) → SKILL.md (<5000 tokens) → references/ (按需)
-- **模块化** — 6 个模块可独立使用，也可链式组合
+- **模块化** — 8 个模块可独立使用，也可链式组合
 - **脚本即黑盒** — 脚本通过 CLI 参数调用，Agent 无需读源码
 - **真实数据** — 所有岗位/评价必须附原始链接，不编造
+- **素材库驱动** — 一次填写素材库，简历和面试准备自动复用
+
+## 参考项目
+
+本项目在设计过程中参考了以下优秀的 Agent Skill 项目：
+
+### 规范与架构
+
+| 项目 | 说明 | 参考内容 |
+|------|------|---------|
+| [anthropics/skills](https://github.com/anthropics/skills) | Anthropic 官方 Skill 示例集 | Agent Skills 规范、目录结构、渐进式加载 |
+| [agentskills.io](https://agentskills.io/specification) | Agent Skills 开放规范 | frontmatter 标准、scripts/references/assets 约定 |
+
+### 求职类 Skill
+
+| 项目 | ⭐ | 说明 | 参考内容 |
+|------|---|------|---------|
+| [Paramchoudhary/ResumeSkills](https://github.com/Paramchoudhary/ResumeSkills) | 683 | 20 个细分简历/求职 Skill 合集 | 模块化架构、bullet writing、ATS 优化 |
+| [liyupi/yupi-skill](https://github.com/liyupi/yupi-skill) | 312 | 程序员鱼皮知识蒸馏 Skill | 中文求职场景、个人 IP 化 |
+| [surapuramakhil-org/Job_search_agent](https://github.com/surapuramakhil-org/Job_search_agent) | 150 | 自动搜索+投递 Agent | 自动化流程设计 |
+| [spontaneousai/job-hunt-copilot](https://github.com/spontaneousai/job-hunt-copilot) | 136 | 素材库+定制简历+面试讲稿 | 素材库（Brag Doc）机制 |
+| [couragec/LLMInternSkill](https://github.com/couragec/LLMInternSkill) | 113 | LLM 方向实习求职 Skill | Evidence Guard 反编造守卫 |
+| [SankaiAI/ats-optimized-resume-agent-skill](https://github.com/SankaiAI/ats-optimized-resume-agent-skill) | 71 | ATS 优化简历 Skill | Gate 门控系统、人性化检查、JSON schema |
+| [jason-huanghao/jobradar](https://github.com/jason-huanghao/jobradar) | 39 | 德国+中国科技岗位搜索 | 双市场覆盖 |
+| [Jichengyuuuuu/resume-builder-skill](https://github.com/Jichengyuuuuu/resume-builder-skill) | 31 | 中文简历快速生成 | 按岗位动态技能维度、HTML+DOCX 输出 |
+| [YIKUAIBANZI/job-hunter](https://github.com/YIKUAIBANZI/job-hunter) | 20 | 批量投递自动化 | JD 匹配打分、投递追踪 |
+| [earino/resumasher](https://github.com/earino/resumasher) | 7 | 简历+求职信+面试准备包 | 面试准备模块设计 |
+| [REALGSY/offer-catcher](https://github.com/REALGSY/offer-catcher) | 2 | 校招求职匹配智能体 | 校招场景参考 |
+
+感谢以上所有开源项目的贡献。
 
 ## License
 
