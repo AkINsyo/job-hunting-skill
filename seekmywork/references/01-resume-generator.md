@@ -1,11 +1,3 @@
----
-name: resume-generator
-description: 采集用户信息并生成结构化 Markdown 简历，或解析已有简历文件为结构化数据。Use when 用户说"帮我写简历""生成简历""我没有简历"，或完整流程中用户无现成简历时。
-metadata:
-  version: "1.0.0"
-  tags: [简历, resume, 求职, 校招]
----
-
 # 简历生成
 
 ## Overview

@@ -1,11 +1,3 @@
----
-name: campus-recruitment-finder
-description: 查找指定企业的校招官网入口，验证可访问性，输出汇总表格。Use when 用户说"找校招网站""校招官网""帮我查校招入口"，或 Module 3 需要先确定校招页面 URL 时。
-metadata:
-  version: "2.0.0"
-  tags: [校招, 校招网站, 企业, recruitment]
----
-
 # 企业校招页面查询
 
 ## Overview

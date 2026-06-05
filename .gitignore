@@ -22,5 +22,8 @@ Thumbs.db
 # Legacy (kept for reference, not actively maintained)
 legacy/
 
+# Generated data (user-specific, not source)
+jobs/
+
 # Screenshots (generated, not source)
 *.png

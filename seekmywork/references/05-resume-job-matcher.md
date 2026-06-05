@@ -1,11 +1,3 @@
----
-name: resume-job-matcher
-description: 将用户简历与拉取到的岗位 JD 进行多维度匹配打分，按匹配度排序推荐职位。Use when 用户说"帮我匹配""哪些职位适合我""推荐岗位""看看哪些合适"。
-metadata:
-  version: "1.0.0"
-  tags: [匹配, 推荐, 岗位, 简历, 校招]
----
-
 # 简历匹配 & 职位推荐
 
 ## Overview

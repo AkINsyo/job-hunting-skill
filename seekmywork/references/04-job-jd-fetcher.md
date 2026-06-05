@@ -1,11 +1,3 @@
----
-name: job-jd-fetcher
-description: 从企业校招页面或招聘平台搜索并拉取具体岗位的 JD（职位描述），结构化保存到本地。Use when 用户说"看看在招什么""拉取岗位""查一下有哪些职位""看看小米的岗位"。
-metadata:
-  version: "2.0.0"
-  tags: [岗位, JD, 招聘, 职位, 校招, 飞书招聘, Lark Hire]
----
-
 # 企业招聘岗位查询 & JD 拉取
 
 ## Overview
