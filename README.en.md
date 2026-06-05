@@ -105,7 +105,9 @@ seekmywork/
 │   ├── 03-campus-recruitment-finder.md
 │   ├── 04-job-jd-fetcher.md
 │   ├── 05-resume-job-matcher.md
-│   └── 06-gap-analyzer.md
+│   ├── 06-gap-analyzer.md
+│   ├── 07-interview-prep.md
+│   └── 08-application-tracker.md
 └── assets/
     └── companies.json              # Company config template
 ```

@@ -31,7 +31,9 @@ npx skills add AkINsyo/job-hunting-skill
 | 3 | **校招查询** | 查找企业校招官网入口 | "找校招网站" |
 | 4 | **岗位拉取** | 从招聘平台拉取 JD 到本地 | "看看在招什么" |
 | 5 | **简历匹配** | 多维度匹配打分，排序推荐 | "帮我匹配" |
-| 6 | **差距分析** | 识别不足，生成提升计划 | "分析我的不足" |
+| 6 | **差距分析 | 识别不足，生成提升计划 | "分析不足" |
+| 7 | **面试准备** | 面试题预测 + 技术知识点 + 回答框架 | "帮我准备面试" |
+| 8 | **投递追踪** | 记录投递状态 + 进度汇总 | "帮我记录投递" |" |
 
 用户可以说"完整流程"触发全流程，也可以单独调用任一模块。
 
@@ -105,7 +107,9 @@ seekmywork/
 │   ├── 03-campus-recruitment-finder.md
 │   ├── 04-job-jd-fetcher.md
 │   ├── 05-resume-job-matcher.md
-│   └── 06-gap-analyzer.md
+│   ├── 06-gap-analyzer.md
+│   ├── 07-interview-prep.md
+│   └── 08-application-tracker.md
 └── assets/
     └── companies.json              # 公司配置模板
 ```
