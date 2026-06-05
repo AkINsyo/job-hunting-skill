@@ -1,32 +1,34 @@
 ---
 name: seekmywork
-description: AI-powered job hunting assistant for campus recruitment. Generates resumes, discovers target companies, fetches job listings, matches resumes to positions, and creates improvement plans. Use when the user says "求职", "校招", "找工作", "帮我写简历", "帮我找公司", "拉取岗位", "帮我匹配", or any job-hunting related request.
+description: AI-powered job hunting assistant for campus recruitment. Generates resumes, discovers target companies, fetches job listings, matches resumes to positions, creates improvement plans, prepares interviews, and tracks applications. Use when the user says "求职", "校招", "找工作", "帮我写简历", "帮我找公司", "拉取岗位", "帮我匹配", "帮我准备面试", "帮我记录投递", or any job-hunting related request.
 compatibility: Requires Python 3.8+ and optionally Playwright (for career page scraping). Scripts use only stdlib except scrape_career.py and browse_career.py which need playwright.
 metadata:
-  version: "4.0.0"
+  version: "5.0.0"
   author: AkINsyo
   language: zh-CN
-  modules: resume-generator,company-explorer,campus-recruitment-finder,job-jd-fetcher,resume-job-matcher,gap-analyzer
+  modules: resume-generator,company-explorer,campus-recruitment-finder,job-jd-fetcher,resume-job-matcher,gap-analyzer,interview-prep,application-tracker
 ---
 
 # SeekMyWork — AI 求职顾问
 
 ## Overview
 
-SeekMyWork is a modular AI job-hunting assistant with 6 modules that can run independently or as a pipeline. You are an advisor — present information and analysis, let the user decide.
+SeekMyWork is a modular AI job-hunting assistant with 8 modules that can run independently or as a pipeline. You are an advisor — present information and analysis, let the user decide.
 
 ## Modules
 
 | # | Module | What it does | Depends on |
 |---|--------|-------------|------------|
-| 1 | resume-generator | Collect info + JD analysis → generate ATS-ready resume (MD + JSON) | — |
+| 1 | resume-generator | Collect info + JD analysis → ATS-ready resume (MD + JSON) | — |
 | 2 | company-explorer | Industry research → company screening → employee reviews | 1 |
 | 3 | campus-recruitment-finder | Find campus recruitment URLs | 2 |
 | 4 | job-jd-fetcher | Fetch job listings to local files | 3 |
 | 5 | resume-job-matcher | Multi-dimension resume-job matching | 1 + 4 |
 | 6 | gap-analyzer | Gap analysis & improvement plan | 1 + 4 |
+| 7 | interview-prep | Interview questions, tech checklist, mock prep | 1 + 4 |
+| 8 | application-tracker | Track application status & progress | 5 |
 
-Detailed docs for each module: `references/01-resume-generator.md` through `references/06-gap-analyzer.md`.
+Detailed docs: `references/01-resume-generator.md` through `references/08-application-tracker.md`.
 
 ## Decision Tree
 
@@ -39,18 +41,29 @@ User request → What do they need?
 ├── "帮我匹配" / "推荐岗位" → Module 5 (references/05-resume-job-matcher.md)
 │   └── Check: resume exists? jobs exist? → Run missing modules first
 ├── "分析不足" / "提升建议" → Module 6 (references/06-gap-analyzer.md)
+├── "帮我准备面试" / "面试会问什么" → Module 7 (references/07-interview-prep.md)
+├── "帮我记录投递" / "我投了XX公司" → Module 8 (references/08-application-tracker.md)
+├── "看看进度" / "投了多少家" → Module 8 (进度汇总)
 └── "完整流程" / "从头开始" → 1 → 2 → 3 → 4 → 5 → 6
 ```
+
+## Brag Doc（项目素材库）
+
+`assets/brag-doc-template.md` 是个人经历素材库模板。建议用户在求职前先填写素材库，后续简历生成和面试准备时自动从中提取内容。
+
+**工作方式**：素材库积累 → 简历按 JD 自动组合 → 面试按岗位自动出题
 
 ## Output Files
 
 ```
-简历_{用户名}.md              ← Module 1
+简历_{用户名}.md/.json        ← Module 1（Markdown + 结构化 JSON）
 目标公司清单_{日期}.md        ← Module 2
 校招网站汇总.md               ← Module 3
 jobs/{公司}_jobs.json/.md     ← Module 4
 匹配结果_{日期}.md            ← Module 5
 提升计划_{日期}.md            ← Module 6
+面试准备_{公司}_{岗位}_{日期}.md  ← Module 7
+投递追踪.md                   ← Module 8（持续更新）
 ```
 
 ## Core Rules
@@ -61,6 +74,7 @@ jobs/{公司}_jobs.json/.md     ← Module 4
 4. **Only recommend free resources** — no paid courses
 5. **Don't decide for the user** — use "建议"/"推荐" not "你应该"
 6. **No value judgments** — don't rate schools/degrees
+7. **Evidence guard** — every claim in resume must trace back to user-provided info
 
 ## Scripts
 
@@ -83,11 +97,6 @@ python scripts/fetch_jobs.py \
   --api-url "https://xxx/api/lark/hire/v1/jobs" \
   --website-id 123456 --city 长沙 --output jobs/xxx_jobs.json
 
-# Or scrape directly from career page
-python scripts/scrape_career.py \
-  --url "https://career.xxx.com/campus" \
-  --click-text "投递岗位" --output jobs/xxx_jobs.json
-
 # Batch fetch from config
 python scripts/fetch_jobs.py --config assets/companies.json --output-dir jobs/
 ```
@@ -107,6 +116,8 @@ python scripts/fetch_jobs.py --config assets/companies.json --output-dir jobs/
 | Fabricating search results | Report "not found" honestly |
 | Running all modules when only one needed | Only re-run affected modules |
 | Reading script source before running `--help` | Try `--help` first, scripts are black boxes |
+| Generating resume without checking brag doc | Ask if user has filled素材库 first |
+| Skipping interview prep before real interview | Always offer Module 7 when interview is scheduled |
 
 ## Mid-Flow Preference Changes
 
@@ -116,6 +127,7 @@ python scripts/fetch_jobs.py --config assets/companies.json --output-dir jobs/
 | "城市改一下" | Update city, re-run 2→3→4→5 |
 | "加一家公司" | Incremental 2→3→4, update 5 |
 | "重新生成简历" | Re-run 1, then 2→5→6 |
+| "XX公司进面试了" | Update Module 8 status + offer Module 7 |
 
 Only re-run affected modules, not the entire pipeline.
 
@@ -129,4 +141,6 @@ After full pipeline:
 - [ ] Job listings saved with source links
 - [ ] Matching results have dimension analysis
 - [ ] Improvement plan has actionable items
+- [ ] Interview prep materials generated (if interview scheduled)
+- [ ] Application tracker updated
 - [ ] All file paths communicated to user
