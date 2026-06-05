@@ -35,11 +35,13 @@ import re
 from pathlib import Path
 from datetime import datetime
 
-try:
-    from playwright.sync_api import sync_playwright
-except ImportError:
-    print("Error: playwright not installed. Run: pip install playwright && playwright install chromium")
-    sys.exit(1)
+def _get_playwright():
+    try:
+        from playwright.sync_api import sync_playwright
+        return sync_playwright
+    except ImportError:
+        print("Error: playwright not installed. Run: pip install playwright && playwright install chromium")
+        sys.exit(1)
 
 
 # ── 常见招聘 API 路径模式 ─────────────────────────────────────
@@ -221,7 +223,7 @@ def scrape_career_page(
             })
 
     print(f"Opening: {url}")
-    with sync_playwright() as p:
+    with _get_playwright() as p:
         browser = p.chromium.launch(headless=headless)
         page = browser.new_page()
         page.on("response", on_response)

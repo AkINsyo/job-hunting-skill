@@ -28,11 +28,13 @@ import re
 from pathlib import Path
 from datetime import datetime
 
-try:
-    from playwright.sync_api import sync_playwright
-except ImportError:
-    print("Error: playwright not installed. Run: pip install playwright && playwright install chromium")
-    sys.exit(1)
+def _get_playwright():
+    try:
+        from playwright.sync_api import sync_playwright
+        return sync_playwright
+    except ImportError:
+        print("Error: playwright not installed. Run: pip install playwright && playwright install chromium")
+        sys.exit(1)
 
 
 # ── 常见校招 URL 模式 ─────────────────────────────────────────
@@ -201,7 +203,7 @@ class CareerBrowser:
         results = []
         print(f"Exploring career URLs for: {base_url}")
 
-        with sync_playwright() as p:
+        with _get_playwright() as p:
             browser = p.chromium.launch(headless=self.headless)
             page = browser.new_page()
             page.on("response", self._on_response)
@@ -245,7 +247,7 @@ class CareerBrowser:
             "screenshot": None,
         }
 
-        with sync_playwright() as p:
+        with _get_playwright() as p:
             browser = p.chromium.launch(headless=self.headless)
             page = browser.new_page()
             page.on("response", self._on_response)

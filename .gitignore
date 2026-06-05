@@ -22,6 +22,9 @@ Thumbs.db
 # Legacy (kept for reference, not actively maintained)
 legacy/
 
+# Test (local only, not uploaded)
+test/
+
 # Generated data (user-specific, not source)
 jobs/
 
